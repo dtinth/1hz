@@ -15,7 +15,21 @@
   </head>  
   <body>
     <h1>Hi there!</h1>
-    
+    <button id="playBtn">
+      Play
+    </button>
+    <script>
+      playBtn.onclick = () => {
+        const ctx = new AudioContext()
+        const osc = ctx.createOscillator()
+        osc.frequency.value = 1
+        const gain = ctx.createGain()
+        gain.gain.value = 0.01
+        osc.connect(gain)
+        gain.connect(ctx.destination)
+        osc.start()
+      }
+    </script>
     <p>
       I'm your cool new webpage. Made with <a href="https://glitch.com">Glitch</a>!
     </p>
