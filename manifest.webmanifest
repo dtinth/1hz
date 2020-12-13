@@ -1,0 +1,20 @@
+{
+  "name": "1hz",
+  "short_name": "1hz",
+  "lang": "en-US",
+  "start_url": "/?source=pwa",
+  "display": "standalone",
+  "theme_color": "#353433",
+  "icons": [
+    {
+      "src": "https://cdn.glitch.com/4a29f2bf-0004-4417-a715-d148f4e12168%2F1hz_512.png?v=1607880956133",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "https://cdn.glitch.com/4a29f2bf-0004-4417-a715-d148f4e12168%2F1hz_192.png?v=1607880999287",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
