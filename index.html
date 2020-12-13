@@ -1,39 +1,68 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-dtinth>
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Hello!</title>
-    
-    <!-- import the webpage's stylesheet -->
-    <link rel="stylesheet" href="/style.css">
-    
+    <title>1hz</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+    />
+    <link rel="stylesheet" href="dtinth-water.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/water.css@2.0.0/out/dark.min.css"
+      integrity="sha256-hwssFiO1q9mOqx1k7bbzQHlQbiUgmas0fx1QOluEWH0="
+      crossorigin="anonymous"
+    />
+
     <!-- import the webpage's javascript file -->
     <script src="/script.js" defer></script>
-  </head>  
+  </head>
   <body>
-    <h1>Hi there!</h1>
-    <button id="playBtn">
-      Play
-    </button>
+    <h1>1hz</h1>
+    <p>
+      <strong>Your computer speakers making buzzing sound?</strong>
+      This little tool plays a quiet 1hz sine wave. It is inaudible to human ear
+      but may stop the hum.
+    </p>
+    <p>
+      <label><input type="checkbox" id="playCheckbox" /> Make sound</label>
+    </p>
     <script>
-      playBtn.onclick = () => {
-        const ctx = new AudioContext()
-        const osc = ctx.createOscillator()
-        osc.frequency.value = 1
-        const gain = ctx.createGain()
-        gain.gain.value = 0.01
-        osc.connect(gain)
-        gain.connect(ctx.destination)
-        osc.start()
+      {
+        let ctx;
+        let playing;
+        playCheckbox.onclick = () => {
+          if (!ctx) {
+            ctx = new AudioContext();
+          }
+          if (playCheckbox.checked && !playing) {
+            const osc = ctx.createOscillator();
+            osc.frequency.value = 1;
+            const gain = ctx.createGain();
+            gain.gain.value = 0.01;
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start();
+            playing = {
+              stop: () => {
+                gain.disconnect();
+                osc.stop();
+              }
+            };
+          } else if (!playCheckbox.checked && playing) {
+            playing.stop();
+            playing = null;
+          }
+        };
       }
     </script>
-    <p>
-      I'm your cool new webpage. Made with <a href="https://glitch.com">Glitch</a>!
-    </p>
-
+    <footer>
+      Made by <a href="https://dt.in.th" target="_blank">@dtinth</a>.
+    </footer>
     <!-- include the Glitch button to show what the webpage is about and
           to make it easier for folks to view source and remix -->
     <div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>
