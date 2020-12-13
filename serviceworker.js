@@ -14,23 +14,30 @@ addEventListener('fetch',  fetchEvent => {
     return;
   }
   fetchEvent.respondWith(async function() {
-    const fetchPromise = fetch(request);
+    const fetchPromise = fetch(request).then(response => ({
+      responseFromFetch: response,
+      responseCopy: response.clone(),
+    }));
     fetchEvent.waitUntil(async function() {
-      const responseFromFetch = await fetchPromise;
-      const responseCopy = responseFromFetch.clone();
+      const { responseCopy } = await fetchPromise;
       const myCache = await caches.open(cacheName);
       return myCache.put(request, responseCopy);
     }());
     if (request.headers.get('Accept').includes('text/html')) {
       try {
-        return await fetchPromise;
+        const { responseFromFetch } = await fetchPromise;
+        return responseFromFetch;
       }
       catch(error) {
         return caches.match(request);
       }
     } else {
       const responseFromCache = await caches.match(request);
-      return responseFromCache || fetchPromise;
+      if (responseFromCache) {
+        return responseFromCache;
+      }
+      const { responseFromFetch } = await fetchPromise;
+      return responseFromFetch;
     }
   }());
 });
