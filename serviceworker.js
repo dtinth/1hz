@@ -19,7 +19,7 @@ addEventListener('fetch',  fetchEvent => {
     fetchEvent.waitUntil(async function() {
       const responseFromFetch = await fetchPromise;
       const responseCopy = responseFromFetch.clone();
-      shouldLog && console.log('Is it OK? %s', request.url, responseCopy.ok);
+      if (!responseCopy.ok) return;
       const myCache = await caches.open(cacheName);
       return myCache.put(request, responseCopy);
     }());
