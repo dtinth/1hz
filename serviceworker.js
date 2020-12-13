@@ -10,6 +10,7 @@ const cacheName = 'files';
 
 addEventListener('fetch',  fetchEvent => {
   const request = fetchEvent.request;
+  const shouldLog = request.url.match(/\.css/)
   if (request.method !== 'GET') {
     return;
   }
@@ -18,6 +19,7 @@ addEventListener('fetch',  fetchEvent => {
     fetchEvent.waitUntil(async function() {
       const responseFromFetch = await fetchPromise;
       const responseCopy = responseFromFetch.clone();
+      shouldLog && console.log('Is it OK? %s', request.url, responseCopy.ok);
       const myCache = await caches.open(cacheName);
       return myCache.put(request, responseCopy);
     }());
@@ -30,7 +32,7 @@ addEventListener('fetch',  fetchEvent => {
       }
     } else {
       const responseFromCache = await caches.match(request);
-      console.log('Serving %s from %s', request.url, responseFromCache ? 'cache' : 'fresh')
+      shouldLog && console.log('Serving %s from %s', request.url, responseFromCache ? 'cache' : 'fresh')
       return responseFromCache || fetchPromise;
     }
   }());
