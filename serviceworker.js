@@ -32,7 +32,6 @@ addEventListener('fetch',  fetchEvent => {
       }
     } else {
       const responseFromCache = await caches.match(request);
-      shouldLog && console.log('Serving %s from %s', request.url, responseFromCache ? 'cache' : 'fresh')
       return responseFromCache || fetchPromise;
     }
   }());
