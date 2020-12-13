@@ -14,30 +14,32 @@ addEventListener('fetch',  fetchEvent => {
     return;
   }
   fetchEvent.respondWith(async function() {
-    const fetchPromise = fetch(request).then(response => ({
-      responseFromFetch: response,
-      responseCopy: response.clone(),
+    // const fetchOptions =
+    //   (new URL(request.url)).origin === self.location.origin
+    //     ? {}
+    //     : {mode: 'no-cors'};
+    const originalFetchPromise = fetch(request);
+    const splittedPromise = originalFetchPromise.then(response => ({
+      original: response,
+      copy: response.clone(),
     }));
+    const fetchPromise = splittedPromise.then(({ original }) => original);
+    const responseCopyPromise = splittedPromise.then(({ copy }) => copy);
     fetchEvent.waitUntil(async function() {
-      const { responseCopy } = await fetchPromise;
+      const responseCopy = await responseCopyPromise;
       const myCache = await caches.open(cacheName);
       return myCache.put(request, responseCopy);
     }());
     if (request.headers.get('Accept').includes('text/html')) {
       try {
-        const { responseFromFetch } = await fetchPromise;
-        return responseFromFetch;
+        return await fetchPromise;
       }
       catch(error) {
         return caches.match(request);
       }
     } else {
       const responseFromCache = await caches.match(request);
-      if (responseFromCache) {
-        return responseFromCache;
-      }
-      const { responseFromFetch } = await fetchPromise;
-      return responseFromFetch;
+      return responseFromCache || fetchPromise;
     }
   }());
 });
