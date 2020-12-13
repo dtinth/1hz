@@ -17,24 +17,30 @@
       integrity="sha256-hwssFiO1q9mOqx1k7bbzQHlQbiUgmas0fx1QOluEWH0="
       crossorigin="anonymous"
     />
-
-    <!-- import the webpage's javascript file -->
-    <script src="/script.js" defer></script>
+    <style>
+      #playCheckbox:disabled ~ #playLabel::after {
+        content: ' (loading)';
+      }
+    </style>
   </head>
   <body>
     <h1>1hz</h1>
     <p>
       <strong>Your computer speakers making buzzing sound?</strong>
       This little tool plays a quiet 1hz sine wave. It is inaudible to human ear
-      but may stop the hum.
+      but may stop your audio appliances from picking up the
+      <a href="https://www.youtube.com/watch?v=JXY0ScrYLDo" target="_blank"
+        >mains hum</a
+      >.
     </p>
     <p>
-      <label><input type="checkbox" id="playCheckbox" /> Make sound</label>
+      <label><input type="checkbox" id="playCheckbox" disabled /> <span id="playLabel">Make sound</span></label>
     </p>
     <script>
       {
         let ctx;
         let playing;
+        playCheckbox.disabled = false;
         playCheckbox.onclick = () => {
           if (!ctx) {
             ctx = new AudioContext();
