@@ -4,6 +4,6 @@
 
 |                       |                               |
 | --------------------- | ----------------------------- |
-| **Web application**   | https://1hz.glitch.me         |
+| **Web application**   | https://1hz.spacet.me         |
 | **Glitch project**    | https://glitch.com/~1hz       |
 | **GitHub repository** | https://github.com/dtinth/1hz |
