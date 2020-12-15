@@ -69,6 +69,7 @@
                 osc.stop();
               }
             };
+            Object.assign(window, { ctx, osc, gain })
           } else if (!playCheckbox.checked && playing) {
             playing.stop();
             playing = null;
